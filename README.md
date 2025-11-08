@@ -1,10 +1,4 @@
-تمام، دلوقتي بعد ما شفت **هيكلة المشروع بالكامل والـ views والـ urls والـ static والـ templates**، أقدر أصيغلك README كامل احترافي مناسب لصفحة GitHub.
 
----
-
-# README.md لمشروع **BlogHub**
-
-```markdown
 # BlogHub
 
 **BlogHub** is a Django-based blogging platform designed to help users explore, read, and share content effortlessly.  
