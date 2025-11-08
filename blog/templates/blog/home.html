@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home - {{ site_name }}</title>
+    <!-- Bootstrap 5 CSS from static files -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">✍️ BlogHub</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url "blog:home" %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:about" %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="container-fluid bg-primary text-white py-5">
+    <div class="container">
+        <h1 class="display-4">� Welcome to {{ site_name }}!</h1>
+        <p class="lead">{{ tagline }}</p>
+        <a href="/posts/" class="btn btn-light btn-lg">Read Posts</a>
+    </div>
+</div>
+
+{% comment %} Featured Topics {% endcomment %}
+{% if is_featured_active %}
+    <div class="container mt-4">
+        <div class="alert alert-info border-start border-5 border-info">
+            <h2 class="alert-heading">⭐ FEATURED TOPIC!</h2>
+            <p class="mb-0">Check out our featured topic: {{ spotlight_topic }}!</p>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Blog Statistics -->
+<div class="container my-4">
+    <div class="card bg-light">
+        <div class="card-body">
+            <h2 class="card-title">Our Community</h2>
+            <div class="row text-center mt-3">
+                <div class="col-md-4">
+                    <h3 class="text-primary">{{ total_posts }}</h3>
+                    <p class="text-muted">Published Posts</p>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="text-primary">{{ total_authors }}</h3>
+                    <p class="text-muted">Active Writers</p>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="text-primary">2025</h3>
+                    <p class="text-muted">Established</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Features Section (Loop through features) -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Why Choose {{ site_name }}?</h2>
+    <div class="row">
+        {% for feature in features %}
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h3>{{ feature.icon }}</h3>
+                        <h5 class="card-title">{{ feature.title }}</h5>
+                        <p class="card-text">{{ feature.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Featured Topics (Loop through topics) -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Popular Topics</h2>
+    <div class="row">
+        {% for topic in featured_topics %}
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        {{ topic }}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url "blog:about" %}" class="btn btn-primary">Learn more about {{ site_name }}</a>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">✍️ BlogHub</h5>
+                <p class="text-white-50">Your go-to platform for insightful articles and stories.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{% url 'blog:home' %}" class="text-decoration-none text-white-50 hover-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:about' %}" class="text-decoration-none text-white-50 hover-link">About</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:contact' %}" class="text-decoration-none text-white-50 hover-link">Contact</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:posts' %}" class="text-decoration-none text-white-50 hover-link">Posts</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">Follow Us</h5>
+                <p class="text-white-50 mb-3">Stay connected on social media</p>
+                <div>
+                    <a href="#" class="text-white me-3 text-decoration-none">📘 Facebook</a>
+                    <a href="#" class="text-white me-3 text-decoration-none">🐦 Twitter</a>
+                    <a href="#" class="text-white text-decoration-none">🔶 Reddit</a>
+                </div>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="text-center">
+            <p class="mb-0 text-white-50">&copy; {{ current_year }} BlogHub. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Bootstrap 5 JS from static files -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
