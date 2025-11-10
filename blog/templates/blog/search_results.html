@@ -33,7 +33,7 @@
             <div class="alert alert-success">
                 Found {{ total_results }} post{{ total_results|pluralize }} matching "{{ query }}"
             </div>
-            
+
             <div class="row">
                 {% for post in posts %}
                 <div class="col-lg-4 col-md-6 mb-4">
@@ -42,7 +42,7 @@
                             <h5 class="card-title">{{ post.title }}</h5>
                             <p class="text-muted">By {{ post.author }} | {{ post.category }}</p>
                             <p class="card-text">{{ post.excerpt }}</p>
-                            
+
                             {% if post.published %}
                                 <span class="badge bg-success">✓ Published</span>
                             {% else %}

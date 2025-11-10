@@ -549,15 +549,11 @@ def category_posts(request, category_name):
 
 def search_posts(request):
     """
-    Search posts by title or content
+    Search posts by title or content or category
 
     URL: /search/?q=django
 
     """
-    # Get a search query from URL parameters
-    query = request.GET.get('q', '')  # Default to empty string if no query
-
-    # All posts
     posts_list = [
         {
             'id': 1,
@@ -669,14 +665,21 @@ def search_posts(request):
         },
     ]
 
-    if not query:
+    # Get a search query from URL parameters
+    query = request.GET.get('q', '')  # Default to empty string if no query
+
+
+
+    if not query :
         search_results = posts_list
     else:
         search_results = [
             post for post in posts_list
             if query.lower() in post['title'].lower() or
-               query.lower() in post['excerpt'].lower()
+               query.lower() in post['excerpt'].lower() or query.lower() in post['category'].lower() or query.lower() in post['author'].lower()
         ]
+
+
 
     context = {
         'query': query,
