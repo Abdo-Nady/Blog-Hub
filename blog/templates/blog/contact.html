@@ -172,83 +172,95 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container text-center position-relative" style="z-index: 1;">
-            <h1 class="display-3 fw-bold mb-3">Get In Touch</h1>
-            <p class="lead fs-4">We'd love to hear from you. Let's start a conversation!</p>
+    <!-- Header -->
+    <div class="bg-success text-white py-4">
+        <div class="container">
+            <h1>📞 Contact Us</h1>
+            <p class="lead">We're here to help! Reach out anytime.</p>
         </div>
     </div>
 
-    <div class="container mb-5">
-        <!-- Contact Information Cards -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow contact-card">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box text-white">📧</div>
-                        <h5 class="card-title">Email</h5>
+    <!-- Messages (Success/Error) -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Contact Form -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Form Column -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Send Us a Message</h2>
+                        <form method="POST" action="{% url 'blog:contact' %}">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject *</label>
+                                <input type="text" class="form-control" id="subject" name="subject" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                📧 Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info Column -->
+            <div class="col-lg-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">📧 Email</h5>
                         <p class="card-text">{{ email }}</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow contact-card">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box text-white">📞</div>
-                        <h5 class="card-title">Phone</h5>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">📱 Phone</h5>
                         <p class="card-text">{{ phone }}</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow contact-card">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box text-white">📍</div>
-                        <h5 class="card-title">Address</h5>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">📍 Address</h5>
                         <p class="card-text">{{ address }}</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow contact-card">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-box text-white">🕒</div>
-                        <h5 class="card-title">Business Hours</h5>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">🕐 Business Hours</h5>
                         <p class="card-text">{{ business_hours }}</p>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Departments Section -->
-        {% if departments %}
-            <div class="row mb-5">
-                <div class="col-12 text-center mb-5">
-                    <h2 class="section-title">Our Departments</h2>
-                </div>
-                <div class="col-lg-10 mx-auto">
-                    <div class="row g-4">
-                        {% for dept in departments %}
-                            <div class="col-md-6">
-                                <div class="card border-0 shadow-sm dept-card">
-                                    <div class="card-body p-4">
-                                        <h5 class="card-title mb-3" style="color: #667eea;">{{ dept.name }}</h5>
-                                        <p class="card-text mb-0">
-                                            <strong>📧 Email:</strong> <a href="mailto:{{ dept.email }}"
-                                                                         class="text-decoration-none"
-                                                                         style="color: #764ba2;">{{ dept.email }}</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}

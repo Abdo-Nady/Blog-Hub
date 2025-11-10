@@ -1,7 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
-from datetime import datetime,date
-
+from datetime import datetime, date
 
 
 # Create your views here.
@@ -75,7 +74,6 @@ def contact(request):
 
 
 def posts(request):
-
     posts_list = [
         {
             'id': 1,
@@ -195,6 +193,7 @@ def posts(request):
     }
 
     return render(request, 'blog/posts.html', context)
+
 
 def post_detail(request, post_id):
     posts_list = [
@@ -439,16 +438,13 @@ def category_posts(request, category_name):
         },
     ]
 
-
     if category_name != category_name.lower():
-
         return redirect('blog:category_posts', category_name=category_name.lower())
 
     filtered_posts = [
         post for post in posts_list
         if post['category'].lower() == category_name
     ]
-
 
     context = {
         'category_name': category_name.title(),
@@ -580,7 +576,6 @@ def search_posts(request):
         },
     ]
 
-
     if not query:
         search_results = posts_list
     else:
@@ -590,11 +585,67 @@ def search_posts(request):
                query.lower() in post['excerpt'].lower()
         ]
 
-
-
     context = {
         'query': query,
         'posts': search_results,
         'total_results': len(search_results),
     }
     return render(request, 'blog/search_results.html', context)
+
+
+from django.contrib import messages
+
+
+def contact(request):
+    """
+    Contact page with form submission
+    GET: Show form
+    POST: Process form submission
+    """
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        # Basic validation
+        if not all([name, email, subject, message]):
+            messages.error(request, 'Please fill in all fields.')
+        elif '@' not in email:
+            messages.error(request, 'Please enter a valid email address.')
+        else:
+
+            print(f"Contact form submission:")
+            print(f"Name: {name}")
+            print(f"Email: {email}")
+            print(f"Subject: {subject}")
+            print(f"Message: {message}")
+
+            # Success message
+            messages.success(request, f'Thank you {name}! We received your message and will respond soon.')
+
+            return redirect('blog:contact')
+
+        # GET request or after POST redirect
+
+    context = {
+        'current_year': datetime.now().year,
+        'email': 'contact@bloghub.com',
+        'phone': '+1-800-BLOGHUB',
+        'address': '456 Writers Lane, Content City, CC 54321',
+        'business_hours': 'Monday - Friday: 9AM - 6PM',
+        'departments': [
+            {'name': 'IT', 'email': 'it@bloghub.com'},
+            {'name': 'HR', 'email': 'HR@bloghub.com'},
+            {'name': 'Finance', 'email': 'Finance@bloghub.com'},
+            {'name': 'Marketing', 'email': 'Marketing@bloghub.com'},
+        ],
+
+        'social_media': [
+            {'platform': 'Facebook', 'url': 'https://www.facebook.com'},
+            {'platform': 'Reddit', 'url': 'https://www.reddit.com'},
+            {'platform': 'Twitter', 'url': 'https://www.twitter.com'},
+        ]
+    }
+    return render(request, 'blog/contact.html', context)
