@@ -49,28 +49,6 @@ def about(request):
     return render(request, 'blog/about.html', context)
 
 
-def contact(request):
-    context = {
-        'current_year': datetime.now().year,
-        'email': 'contact@bloghub.com',
-        'phone': '+1-800-BLOGHUB',
-        'address': '456 Writers Lane, Content City, CC 54321',
-        'business_hours': 'Monday - Friday: 9AM - 6PM',
-        'departments': [
-            {'name': 'IT', 'email': 'it@bloghub.com'},
-            {'name': 'HR', 'email': 'HR@bloghub.com'},
-            {'name': 'Finance', 'email': 'Finance@bloghub.com'},
-            {'name': 'Marketing', 'email': 'Marketing@bloghub.com'},
-        ],
-
-        'social_media': [
-            {'platform': 'Facebook', 'url': 'https://www.facebook.com'},
-            {'platform': 'Reddit', 'url': 'https://www.reddit.com'},
-            {'platform': 'Twitter', 'url': 'https://www.twitter.com'},
-        ]
-    }
-
-    return render(request, 'blog/contact.html', context)
 
 
 def posts(request):
@@ -649,3 +627,4 @@ def contact(request):
         ]
     }
     return render(request, 'blog/contact.html', context)
+
