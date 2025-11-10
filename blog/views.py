@@ -744,3 +744,130 @@ def contact(request):
     return render(request, 'blog/contact.html', context)
 
 
+def author_posts(request, author_name):
+    from datetime import datetime
+
+    posts_list = [
+        {
+            'id': 1,
+            'title': 'Getting Started with Django',
+            'author': 'Sarah Johnson',
+            'category': 'Technology',
+            'excerpt': 'Learn the fundamentals of Django web development',
+            'published': True,
+            'date': date(2025, 1, 15),
+            'tags': ['Django', 'Python', 'Web Development'],
+            'views': 0,
+            'reading_time': '5 min'
+        },
+        {
+            'id': 2,
+            'title': 'The Psychology of Productivity',
+            'author': 'Michael Adams',
+            'category': 'Self-Improvement',
+            'excerpt': 'How to build strong habits without burning out',
+            'published': True,
+            'date': date(2025, 2, 1),
+            'tags': ['Productivity', 'Habits', 'Self Improvement'],
+            'views': 0,
+            'reading_time': '6 min'
+        },
+        {
+            'id': 3,
+            'title': 'Top 10 UI Mistakes in Modern Web Design',
+            'author': 'Emma Clark',
+            'category': 'Design',
+            'excerpt': 'Avoid these common design pitfalls that reduce user engagement',
+            'published': True,
+            'date': date(2025, 2, 10),
+            'tags': ['UI', 'Design', 'UX'],
+            'views': 0,
+            'reading_time': '7 min'
+        },
+        {
+            'id': 4,
+            'title': 'Exploring Machine Learning with Python',
+            'author': 'David Wilson',
+            'category': 'Technology',
+            'excerpt': 'Why ML matters and how to begin building models',
+            'published': False,
+            'date': date(2025, 3, 1),
+            'tags': ['Python', 'Machine Learning', 'AI'],
+            'views': 0,
+            'reading_time': '9 min'
+        },
+        {
+            'id': 5,
+            'title': 'How to Invest as a Beginner',
+            'author': 'Alex Carter',
+            'category': 'Business',
+            'excerpt': 'Understanding the basics of financial investments',
+            'published': True,
+            'date': date(2025, 3, 17),
+            'tags': ['Business', 'Investment', 'Finance'],
+            'views': 0,
+            'reading_time': '8 min'
+        },
+        {
+            'id': 6,
+            'title': 'Why Reading Every Day Changes You',
+            'author': 'Nora Stein',
+            'category': 'Lifestyle',
+            'excerpt': 'Reading is a superpower that expands thinking',
+            'published': True,
+            'date': date(2025, 4, 5),
+            'tags': ['Lifestyle', 'Reading', 'Habits'],
+            'views': 0,
+            'reading_time': '6 min'
+        },
+        {
+            'id': 7,
+            'title': 'Mastering RESTful APIs',
+            'author': 'James Walker',
+            'category': 'Technology',
+            'excerpt': 'Build scalable and maintainable APIs using best practices',
+            'published': True,
+            'date': date(2025, 4, 12),
+            'tags': ['API', 'REST', 'Backend', 'Web Development'],
+            'views': 0,
+            'reading_time': '10 min'
+        },
+        {
+            'id': 8,
+            'title': 'Healthy Eating for Programmers',
+            'author': 'Sophia Baker',
+            'category': 'Health',
+            'excerpt': 'Tips to stay energized and avoid burnout',
+            'published': False,
+            'date': date(2025, 5, 1),
+            'tags': ['Health', 'Productivity', 'Lifestyle'],
+            'views': 0,
+            'reading_time': '5 min'
+        },
+        {
+            'id': 9,
+            'title': 'The Power of Side Projects',
+            'author': 'Chris Morgan',
+            'category': 'Career',
+            'excerpt': 'How personal projects can transform your professional life',
+            'published': True,
+            'date': date(2025, 5, 9),
+            'tags': ['Career', 'Projects', 'Self Improvement'],
+            'views': 0,
+            'reading_time': '7 min'
+        },
+    ]
+
+
+    author_name_normalized = author_name.lower().replace(' ', '-')
+
+    filtered = [p for p in posts_list if p['author'].lower().replace(' ', '-') == author_name_normalized]
+
+    context = {
+        'author_name': author_name.replace('-', ' ').title(),
+        'posts': filtered,
+        'total_posts': len(filtered),
+        'current_year': datetime.now().year,
+    }
+
+    return render(request, 'blog/author_posts.html', context)
