@@ -2,7 +2,7 @@
 {% load static %}
 
 
-    {% block title %} Contact Us - BlogHub {% endblock %}
+{% block title %} Contact Us - BlogHub {% endblock %}
 
 {% block extra_css %}
     <style>
@@ -32,14 +32,18 @@
         }
 
         @keyframes float {
-            from { transform: translateY(0); }
-            to { transform: translateY(-100px); }
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-100px);
+            }
         }
 
         .hero-section h1 {
             font-size: 3.5rem;
             font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .contact-card {
@@ -109,11 +113,11 @@
         }
 
         .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         footer {
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .card-title {
@@ -130,97 +134,121 @@
 
 {% block li %}
 
-   <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:home" %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:about" %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url "blog:contact" %}">Contact</a>
-                </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+           data-bs-toggle="dropdown">
+            Categories
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item"
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:about" %}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url "blog:contact" %}">Contact</a>
+    </li>
 
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="container text-center position-relative" style="z-index: 1;">
-        <h1 class="display-3 fw-bold mb-3">Get In Touch</h1>
-        <p class="lead fs-4">We'd love to hear from you. Let's start a conversation!</p>
-    </div>
-</div>
-
-<div class="container mb-5">
-    <!-- Contact Information Cards -->
-    <div class="row g-4 mb-5">
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow contact-card">
-                <div class="card-body text-center p-4">
-                    <div class="icon-box text-white">📧</div>
-                    <h5 class="card-title">Email</h5>
-                    <p class="card-text">{{ email }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow contact-card">
-                <div class="card-body text-center p-4">
-                    <div class="icon-box text-white">📞</div>
-                    <h5 class="card-title">Phone</h5>
-                    <p class="card-text">{{ phone }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow contact-card">
-                <div class="card-body text-center p-4">
-                    <div class="icon-box text-white">📍</div>
-                    <h5 class="card-title">Address</h5>
-                    <p class="card-text">{{ address }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow contact-card">
-                <div class="card-body text-center p-4">
-                    <div class="icon-box text-white">🕒</div>
-                    <h5 class="card-title">Business Hours</h5>
-                    <p class="card-text">{{ business_hours }}</p>
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container text-center position-relative" style="z-index: 1;">
+            <h1 class="display-3 fw-bold mb-3">Get In Touch</h1>
+            <p class="lead fs-4">We'd love to hear from you. Let's start a conversation!</p>
         </div>
     </div>
 
-    <!-- Departments Section -->
-    {% if departments %}
-        <div class="row mb-5">
-            <div class="col-12 text-center mb-5">
-                <h2 class="section-title">Our Departments</h2>
+    <div class="container mb-5">
+        <!-- Contact Information Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow contact-card">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box text-white">📧</div>
+                        <h5 class="card-title">Email</h5>
+                        <p class="card-text">{{ email }}</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-10 mx-auto">
-                <div class="row g-4">
-                    {% for dept in departments %}
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm dept-card">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-3" style="color: #667eea;">{{ dept.name }}</h5>
-                                    <p class="card-text mb-0">
-                                        <strong>📧 Email:</strong> <a href="mailto:{{ dept.email }}" class="text-decoration-none" style="color: #764ba2;">{{ dept.email }}</a>
-                                    </p>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow contact-card">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box text-white">📞</div>
+                        <h5 class="card-title">Phone</h5>
+                        <p class="card-text">{{ phone }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow contact-card">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box text-white">📍</div>
+                        <h5 class="card-title">Address</h5>
+                        <p class="card-text">{{ address }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow contact-card">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box text-white">🕒</div>
+                        <h5 class="card-title">Business Hours</h5>
+                        <p class="card-text">{{ business_hours }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments Section -->
+        {% if departments %}
+            <div class="row mb-5">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">Our Departments</h2>
+                </div>
+                <div class="col-lg-10 mx-auto">
+                    <div class="row g-4">
+                        {% for dept in departments %}
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm dept-card">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title mb-3" style="color: #667eea;">{{ dept.name }}</h5>
+                                        <p class="card-text mb-0">
+                                            <strong>📧 Email:</strong> <a href="mailto:{{ dept.email }}"
+                                                                         class="text-decoration-none"
+                                                                         style="color: #764ba2;">{{ dept.email }}</a>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
-</div>
+        {% endif %}
+    </div>
 {% endblock %}

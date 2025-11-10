@@ -1,0 +1,107 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ category_name }} - BlogHub{% endblock %}
+
+{% block li %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+    </li>
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+           data-bs-toggle="dropdown">
+            Categories
+        </a>
+        <ul class="dropdown-menu">
+
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:about" %}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+    </li>
+    </li>
+
+{% endblock %}
+{% block content %}
+    <!-- Header -->
+    <div class="bg-info text-white py-4">
+        <div class="container">
+            <h1>📂 {{ category_name }} Posts</h1>
+            <p class="lead">Browse our {{ category_name }} articles</p>
+        </div>
+    </div>
+
+
+
+    <!-- Breadcrumb -->
+    <div class="container mt-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'blog:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'blog:posts' %}">Posts</a></li>
+                <li class="breadcrumb-item active">{{ category_name }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="container my-5">
+        {% if posts %}
+            <div class="row">
+                {% for post in posts %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="text-muted">By {{ post.author }} | {{ post.category }}</p>
+                                <p class="card-text">{{ post.excerpt }}</p>
+
+                                {% if post.published %}
+                                    <span class="badge bg-success">✓ Published</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Draft</span>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+                                <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">
+                                    Read More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="lead">Showing {{ total_posts }} {{ category_name }} posts</p>
+                <a href="{% url 'blog:posts' %}" class="btn btn-outline-primary">← View All Posts</a>
+            </div>
+        {% else %}
+            <div class="alert alert-warning text-center">
+                <h4>No posts found in {{ category_name }} category</h4>
+                <p>Check out our other categories!</p>
+                <a href="{% url 'blog:posts' %}" class="btn btn-primary">View All Posts</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

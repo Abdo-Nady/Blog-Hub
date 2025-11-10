@@ -27,35 +27,69 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% block li %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:home" %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:about" %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
-                </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+
+                            <li><a class="dropdown-item"
+                                   href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "blog:about" %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+                    </li>
                 {% endblock %}
             </ul>
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'blog:search_posts' %}" class="d-flex ms-3">
+                <input type="text" name="q" class="form-control me-2" placeholder="Search posts..." required>
+                <button type="submit" class="btn btn-outline-light">🔍</button>
+            </form>
 
         </div>
     </div>
+
+
 </nav>
 
-    <!-- Main Content (child templates fill this) -->
-    <main>
-        {% block content %}
+<!-- Main Content (child templates fill this) -->
+<main>
+    {% block content %}
         <!-- Default content if child doesn't override -->
         <div class="container my-5">
             <h1>Welcome to BlogHub</h1>
             <p>This is the default content.</p>
         </div>
-        {% endblock %}
-    </main>
+    {% endblock %}
+</main>
 
 <!-- Footer -->
 <footer class="bg-dark text-white py-5 mt-5">
@@ -68,10 +102,14 @@
             <div class="col-md-4 mb-4">
                 <h5 class="fw-bold mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="{% url 'blog:home' %}" class="text-decoration-none text-white-50 hover-link">Home</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:about' %}" class="text-decoration-none text-white-50 hover-link">About</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:contact' %}" class="text-decoration-none text-white-50 hover-link">Contact</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:posts' %}" class="text-decoration-none text-white-50 hover-link">Posts</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:home' %}"
+                                        class="text-decoration-none text-white-50 hover-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:about' %}"
+                                        class="text-decoration-none text-white-50 hover-link">About</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:contact' %}"
+                                        class="text-decoration-none text-white-50 hover-link">Contact</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:posts' %}"
+                                        class="text-decoration-none text-white-50 hover-link">Posts</a></li>
                 </ul>
             </div>
             <div class="col-md-4 mb-4">

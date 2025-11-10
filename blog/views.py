@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse, Http404
 from datetime import datetime,date
 
@@ -82,7 +82,7 @@ def posts(request):
             'title': 'Getting Started with Django',
             'author': 'Sarah Johnson',
             'category': 'Technology',
-            'content': 'Learn the fundamentals of Django web development',
+            'excerpt': 'Learn the fundamentals of Django web development',
             'published': True,
             'date': date(2025, 1, 15),
             'tags': ['Django', 'Python', 'Web Development'],
@@ -94,7 +94,7 @@ def posts(request):
             'title': 'The Psychology of Productivity',
             'author': 'Michael Adams',
             'category': 'Self-Improvement',
-            'content': 'How to build strong habits without burning out',
+            'excerpt': 'How to build strong habits without burning out',
             'published': True,
             'date': date(2025, 2, 1),
             'tags': ['Productivity', 'Habits', 'Self Improvement'],
@@ -106,7 +106,7 @@ def posts(request):
             'title': 'Top 10 UI Mistakes in Modern Web Design',
             'author': 'Emma Clark',
             'category': 'Design',
-            'content': 'Avoid these common design pitfalls that reduce user engagement',
+            'excerpt': 'Avoid these common design pitfalls that reduce user engagement',
             'published': True,
             'date': date(2025, 2, 10),
             'tags': ['UI', 'Design', 'UX'],
@@ -118,7 +118,7 @@ def posts(request):
             'title': 'Exploring Machine Learning with Python',
             'author': 'David Wilson',
             'category': 'Technology',
-            'content': 'Why ML matters and how to begin building models',
+            'excerpt': 'Why ML matters and how to begin building models',
             'published': False,
             'date': date(2025, 3, 1),
             'tags': ['Python', 'Machine Learning', 'AI'],
@@ -130,7 +130,7 @@ def posts(request):
             'title': 'How to Invest as a Beginner',
             'author': 'Alex Carter',
             'category': 'Business',
-            'content': 'Understanding the basics of financial investments',
+            'excerpt': 'Understanding the basics of financial investments',
             'published': True,
             'date': date(2025, 3, 17),
             'tags': ['Business', 'Investment', 'Finance'],
@@ -142,7 +142,7 @@ def posts(request):
             'title': 'Why Reading Every Day Changes You',
             'author': 'Nora Stein',
             'category': 'Lifestyle',
-            'content': 'Reading is a superpower that expands thinking',
+            'excerpt': 'Reading is a superpower that expands thinking',
             'published': True,
             'date': date(2025, 4, 5),
             'tags': ['Lifestyle', 'Reading', 'Habits'],
@@ -154,7 +154,7 @@ def posts(request):
             'title': 'Mastering RESTful APIs',
             'author': 'James Walker',
             'category': 'Technology',
-            'content': 'Build scalable and maintainable APIs using best practices',
+            'excerpt': 'Build scalable and maintainable APIs using best practices',
             'published': True,
             'date': date(2025, 4, 12),
             'tags': ['API', 'REST', 'Backend', 'Web Development'],
@@ -166,7 +166,7 @@ def posts(request):
             'title': 'Healthy Eating for Programmers',
             'author': 'Sophia Baker',
             'category': 'Health',
-            'content': 'Tips to stay energized and avoid burnout',
+            'excerpt': 'Tips to stay energized and avoid burnout',
             'published': False,
             'date': date(2025, 5, 1),
             'tags': ['Health', 'Productivity', 'Lifestyle'],
@@ -178,7 +178,7 @@ def posts(request):
             'title': 'The Power of Side Projects',
             'author': 'Chris Morgan',
             'category': 'Career',
-            'content': 'How personal projects can transform your professional life',
+            'excerpt': 'How personal projects can transform your professional life',
             'published': True,
             'date': date(2025, 5, 9),
             'tags': ['Career', 'Projects', 'Self Improvement'],
@@ -203,7 +203,7 @@ def post_detail(request, post_id):
             'title': 'Getting Started with Django',
             'author': 'Sarah Johnson',
             'category': 'Technology',
-            'content': 'Learn the fundamentals of Django web development',
+            'excerpt': 'Learn the fundamentals of Django web development',
             'published': True,
             'date': date(2025, 1, 15),
             'tags': ['Django', 'Python', 'Web Development'],
@@ -215,7 +215,7 @@ def post_detail(request, post_id):
             'title': 'The Psychology of Productivity',
             'author': 'Michael Adams',
             'category': 'Self-Improvement',
-            'content': 'How to build strong habits without burning out',
+            'excerpt': 'How to build strong habits without burning out',
             'published': True,
             'date': date(2025, 2, 1),
             'tags': ['Productivity', 'Habits', 'Self Improvement'],
@@ -227,7 +227,7 @@ def post_detail(request, post_id):
             'title': 'Top 10 UI Mistakes in Modern Web Design',
             'author': 'Emma Clark',
             'category': 'Design',
-            'content': 'Avoid these common design pitfalls that reduce user engagement',
+            'excerpt': 'Avoid these common design pitfalls that reduce user engagement',
             'published': True,
             'date': date(2025, 2, 10),
             'tags': ['UI', 'Design', 'UX'],
@@ -239,7 +239,7 @@ def post_detail(request, post_id):
             'title': 'Exploring Machine Learning with Python',
             'author': 'David Wilson',
             'category': 'Technology',
-            'content': 'Why ML matters and how to begin building models',
+            'excerpt': 'Why ML matters and how to begin building models',
             'published': False,
             'date': date(2025, 3, 1),
             'tags': ['Python', 'Machine Learning', 'AI'],
@@ -251,7 +251,7 @@ def post_detail(request, post_id):
             'title': 'How to Invest as a Beginner',
             'author': 'Alex Carter',
             'category': 'Business',
-            'content': 'Understanding the basics of financial investments',
+            'excerpt': 'Understanding the basics of financial investments',
             'published': True,
             'date': date(2025, 3, 17),
             'tags': ['Business', 'Investment', 'Finance'],
@@ -263,7 +263,7 @@ def post_detail(request, post_id):
             'title': 'Why Reading Every Day Changes You',
             'author': 'Nora Stein',
             'category': 'Lifestyle',
-            'content': 'Reading is a superpower that expands thinking',
+            'excerpt': 'Reading is a superpower that expands thinking',
             'published': True,
             'date': date(2025, 4, 5),
             'tags': ['Lifestyle', 'Reading', 'Habits'],
@@ -275,7 +275,7 @@ def post_detail(request, post_id):
             'title': 'Mastering RESTful APIs',
             'author': 'James Walker',
             'category': 'Technology',
-            'content': 'Build scalable and maintainable APIs using best practices',
+            'excerpt': 'Build scalable and maintainable APIs using best practices',
             'published': True,
             'date': date(2025, 4, 12),
             'tags': ['API', 'REST', 'Backend', 'Web Development'],
@@ -287,7 +287,7 @@ def post_detail(request, post_id):
             'title': 'Healthy Eating for Programmers',
             'author': 'Sophia Baker',
             'category': 'Health',
-            'content': 'Tips to stay energized and avoid burnout',
+            'excerpt': 'Tips to stay energized and avoid burnout',
             'published': False,
             'date': date(2025, 5, 1),
             'tags': ['Health', 'Productivity', 'Lifestyle'],
@@ -299,7 +299,7 @@ def post_detail(request, post_id):
             'title': 'The Power of Side Projects',
             'author': 'Chris Morgan',
             'category': 'Career',
-            'content': 'How personal projects can transform your professional life',
+            'excerpt': 'How personal projects can transform your professional life',
             'published': True,
             'date': date(2025, 5, 9),
             'tags': ['Career', 'Projects', 'Self Improvement'],
@@ -320,3 +320,281 @@ def post_detail(request, post_id):
     return render(request, 'blog/post_detail.html', context)
 
 
+def category_posts(request, category_name):
+    """
+    Display posts filtered by category
+
+    URL: /category/technology/
+    Shows only posts in that category
+    """
+
+    posts_list = [
+        {
+            'id': 1,
+            'title': 'Getting Started with Django',
+            'author': 'Sarah Johnson',
+            'category': 'Technology',
+            'excerpt': 'Learn the fundamentals of Django web development',
+            'published': True,
+            'date': date(2025, 1, 15),
+            'tags': ['Django', 'Python', 'Web Development'],
+            'views': 0,
+            'reading_time': '5 min'
+        },
+        {
+            'id': 2,
+            'title': 'The Psychology of Productivity',
+            'author': 'Michael Adams',
+            'category': 'Self-Improvement',
+            'excerpt': 'How to build strong habits without burning out',
+            'published': True,
+            'date': date(2025, 2, 1),
+            'tags': ['Productivity', 'Habits', 'Self Improvement'],
+            'views': 0,
+            'reading_time': '6 min'
+        },
+        {
+            'id': 3,
+            'title': 'Top 10 UI Mistakes in Modern Web Design',
+            'author': 'Emma Clark',
+            'category': 'Design',
+            'excerpt': 'Avoid these common design pitfalls that reduce user engagement',
+            'published': True,
+            'date': date(2025, 2, 10),
+            'tags': ['UI', 'Design', 'UX'],
+            'views': 0,
+            'reading_time': '7 min'
+        },
+        {
+            'id': 4,
+            'title': 'Exploring Machine Learning with Python',
+            'author': 'David Wilson',
+            'category': 'Technology',
+            'excerpt': 'Why ML matters and how to begin building models',
+            'published': False,
+            'date': date(2025, 3, 1),
+            'tags': ['Python', 'Machine Learning', 'AI'],
+            'views': 0,
+            'reading_time': '9 min'
+        },
+        {
+            'id': 5,
+            'title': 'How to Invest as a Beginner',
+            'author': 'Alex Carter',
+            'category': 'Business',
+            'excerpt': 'Understanding the basics of financial investments',
+            'published': True,
+            'date': date(2025, 3, 17),
+            'tags': ['Business', 'Investment', 'Finance'],
+            'views': 0,
+            'reading_time': '8 min'
+        },
+        {
+            'id': 6,
+            'title': 'Why Reading Every Day Changes You',
+            'author': 'Nora Stein',
+            'category': 'Lifestyle',
+            'excerpt': 'Reading is a superpower that expands thinking',
+            'published': True,
+            'date': date(2025, 4, 5),
+            'tags': ['Lifestyle', 'Reading', 'Habits'],
+            'views': 0,
+            'reading_time': '6 min'
+        },
+        {
+            'id': 7,
+            'title': 'Mastering RESTful APIs',
+            'author': 'James Walker',
+            'category': 'Technology',
+            'excerpt': 'Build scalable and maintainable APIs using best practices',
+            'published': True,
+            'date': date(2025, 4, 12),
+            'tags': ['API', 'REST', 'Backend', 'Web Development'],
+            'views': 0,
+            'reading_time': '10 min'
+        },
+        {
+            'id': 8,
+            'title': 'Healthy Eating for Programmers',
+            'author': 'Sophia Baker',
+            'category': 'Health',
+            'excerpt': 'Tips to stay energized and avoid burnout',
+            'published': False,
+            'date': date(2025, 5, 1),
+            'tags': ['Health', 'Productivity', 'Lifestyle'],
+            'views': 0,
+            'reading_time': '5 min'
+        },
+        {
+            'id': 9,
+            'title': 'The Power of Side Projects',
+            'author': 'Chris Morgan',
+            'category': 'Career',
+            'excerpt': 'How personal projects can transform your professional life',
+            'published': True,
+            'date': date(2025, 5, 9),
+            'tags': ['Career', 'Projects', 'Self Improvement'],
+            'views': 0,
+            'reading_time': '7 min'
+        },
+    ]
+
+
+    if category_name != category_name.lower():
+
+        return redirect('blog:category_posts', category_name=category_name.lower())
+
+    filtered_posts = [
+        post for post in posts_list
+        if post['category'].lower() == category_name
+    ]
+
+
+    context = {
+        'category_name': category_name.title(),
+        'posts': filtered_posts,
+        'total_posts': len(filtered_posts),
+    }
+    return render(request, 'blog/category_posts.html', context)
+
+
+def search_posts(request):
+    """
+    Search posts by title or content
+
+    URL: /search/?q=django
+
+    """
+    # Get a search query from URL parameters
+    query = request.GET.get('q', '')  # Default to empty string if no query
+
+    # All posts
+    posts_list = [
+        {
+            'id': 1,
+            'title': 'Getting Started with Django',
+            'author': 'Sarah Johnson',
+            'category': 'Technology',
+            'excerpt': 'Learn the fundamentals of Django web development',
+            'published': True,
+            'date': date(2025, 1, 15),
+            'tags': ['Django', 'Python', 'Web Development'],
+            'views': 0,
+            'reading_time': '5 min'
+        },
+        {
+            'id': 2,
+            'title': 'The Psychology of Productivity',
+            'author': 'Michael Adams',
+            'category': 'Self-Improvement',
+            'excerpt': 'How to build strong habits without burning out',
+            'published': True,
+            'date': date(2025, 2, 1),
+            'tags': ['Productivity', 'Habits', 'Self Improvement'],
+            'views': 0,
+            'reading_time': '6 min'
+        },
+        {
+            'id': 3,
+            'title': 'Top 10 UI Mistakes in Modern Web Design',
+            'author': 'Emma Clark',
+            'category': 'Design',
+            'excerpt': 'Avoid these common design pitfalls that reduce user engagement',
+            'published': True,
+            'date': date(2025, 2, 10),
+            'tags': ['UI', 'Design', 'UX'],
+            'views': 0,
+            'reading_time': '7 min'
+        },
+        {
+            'id': 4,
+            'title': 'Exploring Machine Learning with Python',
+            'author': 'David Wilson',
+            'category': 'Technology',
+            'excerpt': 'Why ML matters and how to begin building models',
+            'published': False,
+            'date': date(2025, 3, 1),
+            'tags': ['Python', 'Machine Learning', 'AI'],
+            'views': 0,
+            'reading_time': '9 min'
+        },
+        {
+            'id': 5,
+            'title': 'How to Invest as a Beginner',
+            'author': 'Alex Carter',
+            'category': 'Business',
+            'excerpt': 'Understanding the basics of financial investments',
+            'published': True,
+            'date': date(2025, 3, 17),
+            'tags': ['Business', 'Investment', 'Finance'],
+            'views': 0,
+            'reading_time': '8 min'
+        },
+        {
+            'id': 6,
+            'title': 'Why Reading Every Day Changes You',
+            'author': 'Nora Stein',
+            'category': 'Lifestyle',
+            'excerpt': 'Reading is a superpower that expands thinking',
+            'published': True,
+            'date': date(2025, 4, 5),
+            'tags': ['Lifestyle', 'Reading', 'Habits'],
+            'views': 0,
+            'reading_time': '6 min'
+        },
+        {
+            'id': 7,
+            'title': 'Mastering RESTful APIs',
+            'author': 'James Walker',
+            'category': 'Technology',
+            'excerpt': 'Build scalable and maintainable APIs using best practices',
+            'published': True,
+            'date': date(2025, 4, 12),
+            'tags': ['API', 'REST', 'Backend', 'Web Development'],
+            'views': 0,
+            'reading_time': '10 min'
+        },
+        {
+            'id': 8,
+            'title': 'Healthy Eating for Programmers',
+            'author': 'Sophia Baker',
+            'category': 'Health',
+            'excerpt': 'Tips to stay energized and avoid burnout',
+            'published': False,
+            'date': date(2025, 5, 1),
+            'tags': ['Health', 'Productivity', 'Lifestyle'],
+            'views': 0,
+            'reading_time': '5 min'
+        },
+        {
+            'id': 9,
+            'title': 'The Power of Side Projects',
+            'author': 'Chris Morgan',
+            'category': 'Career',
+            'excerpt': 'How personal projects can transform your professional life',
+            'published': True,
+            'date': date(2025, 5, 9),
+            'tags': ['Career', 'Projects', 'Self Improvement'],
+            'views': 0,
+            'reading_time': '7 min'
+        },
+    ]
+
+
+    if not query:
+        search_results = posts_list
+    else:
+        search_results = [
+            post for post in posts_list
+            if query.lower() in post['title'].lower() or
+               query.lower() in post['excerpt'].lower()
+        ]
+
+
+
+    context = {
+        'query': query,
+        'posts': search_results,
+        'total_results': len(search_results),
+    }
+    return render(request, 'blog/search_results.html', context)
