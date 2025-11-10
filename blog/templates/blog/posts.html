@@ -94,7 +94,7 @@
                     </div>
                     <div class="card-footer">
                         <!-- ⭐ New: Link to post detail page -->
-                        <a href="/post/{{ post.id }}/" class="btn btn-primary btn-sm w-100">
+                        <a href="{% url 'blog:post_detail' post.id  %}" class="btn btn-primary btn-sm w-100">
                             Read More
                         </a>
                     </div>
