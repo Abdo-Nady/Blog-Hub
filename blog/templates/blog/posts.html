@@ -10,19 +10,23 @@
         body {
             background-color: #f8f9fa;
         }
+
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 3rem 0;
             margin-bottom: 2rem;
         }
+
         .post-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .post-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
+
         .category-badge {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -62,73 +66,43 @@
     </div>
 </nav>
 
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container">
-            <h1 class="display-4 fw-bold text-center">{{ page_title }}</h1>
-            <p class="lead text-center">Total Posts: <strong>{{ total_posts }}</strong></p>
-        </div>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-center">{{ page_title }}</h1>
+        <p class="lead text-center">Total Posts: <strong>{{ total_posts }}</strong></p>
     </div>
+</div>
 
-    <!-- Posts Grid -->
-    <div class="container mb-5">
-        <div class="row g-4">
-            {% for post in posts_list %}
-            <div class="col-lg-4 col-md-6">
-                <div class="card border-0 shadow-sm h-100 post-card">
-                    <div class="card-body d-flex flex-column">
-                        <!-- Emoji Cover -->
-                        <div class="text-center mb-3">
-                            <h1 style="font-size: 4rem; margin: 0;">
-                                {% if post.category == 'Technology' %}💻
-                                {% elif post.category == 'Design' %}🎨
-                                {% elif post.category == 'Travel' %}✈️
-                                {% elif post.category == 'Education' %}📚
-                                {% elif post.category == 'Self-Improvement' %}🌟
-                                {% elif post.category == 'Business' %}💼
-                                {% elif post.category == 'Lifestyle' %}🌿
-                                {% elif post.category == 'Health' %}❤️
-                                {% elif post.category == 'Career' %}🚀
-                                {% else %}📝
-                                {% endif %}
-                            </h1>
-                        </div>
+<!-- Posts Grid -->
+<div class="container mb-5">
+    <div class="row g-4">
+        {% for post in posts %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="text-muted">{{ post.category }} | By {{ post.author }}</p>
+                        <p class="text-muted small">{{ post.date }} | {{ post.reading_time }} read</p>
+                        <p class="card-text">{{ post.excerpt }}</p>
 
-                        <!-- Category Badge -->
-                        <div class="mb-2">
-                            <span class="category-badge">{{ post.category }}</span>
-                        </div>
-
-                        <!-- Post Title -->
-                        <h5 class="card-title fw-bold">{{ post.title }}</h5>
-
-                        <!-- Author and Date -->
-                        <p class="card-text text-muted small mb-2">
-                            <strong>By:</strong> {{ post.author }} |
-                            <strong>Date:</strong> {{ post.date }}
-                        </p>
-
-                        <!-- Excerpt -->
-                        <p class="card-text text-muted flex-grow-1">{{ post.excerpt }}</p>
-
-                        <!-- Status Badge and Button -->
-                        <div class="mt-auto">
-                            {% if post.published %}
-                            <span class="badge bg-success mb-2">Published</span>
-                            {% else %}
-                            <span class="badge bg-warning text-dark mb-2">Draft</span>
-                            {% endif %}
-
-                            <div class="d-grid">
-                                <a href="#" class="btn btn-primary">Read More</a>
-                            </div>
-                        </div>
+                        {% if post.published %}
+                            <span class="badge bg-success">✓ Published</span>
+                        {% else %}
+                            <span class="badge bg-warning">Draft</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <!-- ⭐ New: Link to post detail page -->
+                        <a href="/post/{{ post.id }}/" class="btn btn-primary btn-sm w-100">
+                            Read More
+                        </a>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
+</div>
 
 <!-- Footer -->
 <footer class="bg-dark text-white py-5 mt-5">
@@ -141,10 +115,14 @@
             <div class="col-md-4 mb-4">
                 <h5 class="fw-bold mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="{% url 'blog:home' %}" class="text-decoration-none text-white-50 hover-link">Home</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:about' %}" class="text-decoration-none text-white-50 hover-link">About</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:contact' %}" class="text-decoration-none text-white-50 hover-link">Contact</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:posts' %}" class="text-decoration-none text-white-50 hover-link">Posts</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:home' %}"
+                                        class="text-decoration-none text-white-50 hover-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:about' %}"
+                                        class="text-decoration-none text-white-50 hover-link">About</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:contact' %}"
+                                        class="text-decoration-none text-white-50 hover-link">Contact</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:posts' %}"
+                                        class="text-decoration-none text-white-50 hover-link">Posts</a></li>
                 </ul>
             </div>
             <div class="col-md-4 mb-4">
@@ -164,6 +142,6 @@
     </div>
 </footer>
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
