@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title (child templates can override) -->
+    <title>{% block title %}BlogHub - Share Your Stories{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Extra CSS (child templates can add more CSS) -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">✍️ BlogHub</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% block li %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:about" %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+                </li>
+                {% endblock %}
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+    <!-- Main Content (child templates fill this) -->
+    <main>
+        {% block content %}
+        <!-- Default content if child doesn't override -->
+        <div class="container my-5">
+            <h1>Welcome to BlogHub</h1>
+            <p>This is the default content.</p>
+        </div>
+        {% endblock %}
+    </main>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">✍️ BlogHub</h5>
+                <p class="text-white-50">Your go-to platform for insightful articles and stories.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{% url 'blog:home' %}" class="text-decoration-none text-white-50 hover-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:about' %}" class="text-decoration-none text-white-50 hover-link">About</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:contact' %}" class="text-decoration-none text-white-50 hover-link">Contact</a></li>
+                    <li class="mb-2"><a href="{% url 'blog:posts' %}" class="text-decoration-none text-white-50 hover-link">Posts</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">Follow Us</h5>
+                <p class="text-white-50 mb-3">Stay connected on social media</p>
+                <div>
+                    <a href="#" class="text-white me-3 text-decoration-none">📘 Facebook</a>
+                    <a href="#" class="text-white me-3 text-decoration-none">🐦 Twitter</a>
+                    <a href="#" class="text-white text-decoration-none">🔶 Reddit</a>
+                </div>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="text-center">
+            <p class="mb-0 text-white-50">&copy; {{ current_year }} BlogHub. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

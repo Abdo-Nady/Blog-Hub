@@ -1,11 +1,9 @@
+{% extends 'blog/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }} - BlogHub</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+{% block tite %}{{ page_title }} - BlogHub {% endblock %}
+
+{% block extra_css %}
     <style>
         body {
             background-color: #f8f9fa;
@@ -36,19 +34,11 @@
             font-weight: 500;
         }
     </style>
-</head>
-<body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">✍️ BlogHub</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
+
+{% endblock %}
+
+{% block li %}
+          <li class="nav-item">
                     <a class="nav-link" href="{% url "blog:home" %}">Home</a>
                 </li>
                 <li class="nav-item">
@@ -60,88 +50,46 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
                 </li>
-            </ul>
+{% endblock %}
 
+{% block content %}
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold text-center">{{ page_title }}</h1>
+            <p class="lead text-center">Total Posts: <strong>{{ total_posts }}</strong></p>
         </div>
     </div>
-</nav>
 
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="container">
-        <h1 class="display-4 fw-bold text-center">{{ page_title }}</h1>
-        <p class="lead text-center">Total Posts: <strong>{{ total_posts }}</strong></p>
-    </div>
-</div>
+    <!-- Posts Grid -->
+    <div class="container mb-5">
+        <div class="row g-4">
+            {% for post in posts %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="text-muted">{{ post.category }} | By {{ post.author }}</p>
+                            <p class="text-muted small">{{ post.date }} | {{ post.reading_time }} read</p>
+                            <p class="card-text">{{ post.excerpt }}</p>
 
-<!-- Posts Grid -->
-<div class="container mb-5">
-    <div class="row g-4">
-        {% for post in posts %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="text-muted">{{ post.category }} | By {{ post.author }}</p>
-                        <p class="text-muted small">{{ post.date }} | {{ post.reading_time }} read</p>
-                        <p class="card-text">{{ post.excerpt }}</p>
-
-                        {% if post.published %}
-                            <span class="badge bg-success">✓ Published</span>
-                        {% else %}
-                            <span class="badge bg-warning">Draft</span>
-                        {% endif %}
-                    </div>
-                    <div class="card-footer">
-                        <!-- ⭐ New: Link to post detail page -->
-                        <a href="{% url 'blog:post_detail' post.id  %}" class="btn btn-primary btn-sm w-100">
-                            Read More
-                        </a>
+                            {% if post.published %}
+                                <span class="badge bg-success">✓ Published</span>
+                            {% else %}
+                                <span class="badge bg-warning">Draft</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            <!-- ⭐ New: Link to post detail page -->
+                            <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">
+                                Read More
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>
-
-<!-- Footer -->
-<footer class="bg-dark text-white py-5 mt-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <h5 class="fw-bold mb-3">✍️ BlogHub</h5>
-                <p class="text-white-50">Your go-to platform for insightful articles and stories.</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <h5 class="fw-bold mb-3">Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="{% url 'blog:home' %}"
-                                        class="text-decoration-none text-white-50 hover-link">Home</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:about' %}"
-                                        class="text-decoration-none text-white-50 hover-link">About</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:contact' %}"
-                                        class="text-decoration-none text-white-50 hover-link">Contact</a></li>
-                    <li class="mb-2"><a href="{% url 'blog:posts' %}"
-                                        class="text-decoration-none text-white-50 hover-link">Posts</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 mb-4">
-                <h5 class="fw-bold mb-3">Follow Us</h5>
-                <p class="text-white-50 mb-3">Stay connected on social media</p>
-                <div>
-                    <a href="#" class="text-white me-3 text-decoration-none">📘 Facebook</a>
-                    <a href="#" class="text-white me-3 text-decoration-none">🐦 Twitter</a>
-                    <a href="#" class="text-white text-decoration-none">🔶 Reddit</a>
-                </div>
-            </div>
-        </div>
-        <hr class="border-secondary my-4">
-        <div class="text-center">
-            <p class="mb-0 text-white-50">&copy; {{ current_year }} BlogHub. All rights reserved.</p>
+            {% endfor %}
         </div>
     </div>
-</footer>
 
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+{% endblock %}

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from datetime import datetime,date
-from django.urls import  reverse
 
 
 
@@ -319,4 +318,5 @@ def post_detail(request, post_id):
     }
 
     return render(request, 'blog/post_detail.html', context)
+
 
