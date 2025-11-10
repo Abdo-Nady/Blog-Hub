@@ -5,6 +5,12 @@
 It features a clean and responsive interface, dynamic context-driven templates, and essential pages like Home, Posts, About, and Contact.
 
 ---
+## 🚧 Under Construction
+
+This project is still a work in progress.  
+New features, improvements, and fixes are being added regularly.
+
+---
 
 ## 🚀 Features
 
