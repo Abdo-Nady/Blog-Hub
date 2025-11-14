@@ -112,7 +112,6 @@ class Post(models.Model):
         default=True,
         help_text='Allow users to comment'
     )
-    published = models.BooleanField( default=False)
 
     views = models.IntegerField(default=0)
 

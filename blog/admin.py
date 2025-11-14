@@ -20,11 +20,13 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
+
+
     list_display = (
         "title",
         "author",
         "category",
-        "published",
+        "status",
         "is_featured",
         "read_time",
         "views",
@@ -33,7 +35,7 @@ class PostAdmin(admin.ModelAdmin):
         "tag_list",
     )
     list_filter = (
-        "published",
+        "status",
         "is_featured",
         "category",
         "author",
@@ -48,9 +50,65 @@ class PostAdmin(admin.ModelAdmin):
         "category__name",
         "tags__name",
     )
+
     list_per_page = 15
     prepopulated_fields = {'slug': ('title',)}
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'author')
+        }),
+        ('Content', {
+            'fields': ('excerpt', 'content')
+        }),
+        ('Classification', {
+            'fields': ('category', 'tags')
+        }),
+        ('Settings', {
+            'fields': ('status', 'is_featured', 'allow_comments')
+        }),
+        ('Metadata', {
+            'fields': ('views_count', 'published_at', 'created_at'),
+            'classes': ('collapse',),  # Collapsible section
+        }),
+    )
+    filter_horizontal = ('tags',)
+
     readonly_fields = ("views", "created_at")
+
+
+    actions = ['make_published', 'make_draft', 'reset_views']
+
+    def make_published(self, request, queryset):
+        """Publish selected posts."""
+        updated = queryset.update(status=Post.Status.PUBLISHED)
+        self.message_user(
+            request,
+            f'{updated} post(s) were successfully published.'
+        )
+
+    make_published.short_description = 'Publish selected posts'
+
+    def make_draft(self, request, queryset):
+        """Set selected posts to draft."""
+        updated = queryset.update(status=Post.Status.DRAFT)
+        self.message_user(
+            request,
+            f'{updated} post(s) were set to draft.'
+        )
+
+    make_draft.short_description = 'Set selected posts to draft'
+
+    def reset_views(self, request, queryset):
+        """Reset view count to zero."""
+        updated = queryset.update(views_count=0)
+        self.message_user(
+            request,
+            f'View count reset for {updated} post(s).',
+            level='warning'
+        )
+
+    reset_views.short_description = 'Reset view count'
 
     def tag_list(self, obj):
         tags = obj.tags.all()
@@ -64,11 +122,13 @@ class PostAdmin(admin.ModelAdmin):
     tag_list.short_description = "Tags"
 
     def colored_status(self, obj):
-        color = "green" if obj.published else "red"
-        status = "Published" if obj.published else "Draft"
+        color = "green" if obj.status == Post.Status.PUBLISHED else "red"
+        status = obj.get_status_display()
         return format_html(f'<span style="color: {color};">{status}</span>')
 
     colored_status.short_description = "Status"
+
+
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
