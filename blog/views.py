@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from datetime import datetime, date
 
 
@@ -728,7 +728,7 @@ def contact(request):
     context = {
         'current_year': datetime.now().year,
         'email': 'contact@bloghub.com',
-        'phone': '+1-800-BLOGHUB',
+        'phone': '+1-800-BLOG HUB',
         'address': '456 Writers Lane, Content City, CC 54321',
         'business_hours': 'Monday - Friday: 9AM - 6PM',
         'departments': [
