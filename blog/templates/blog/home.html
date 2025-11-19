@@ -164,7 +164,7 @@
             {% for topic in featured_topics %}
                 <div class="col-md-6 col-lg-4 mb-3">
                     <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href="{% url 'blog:category_posts' topic %}" class="list-group-item list-group-item-action">
                             {{ topic }}
                         </a>
                     </div>

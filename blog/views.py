@@ -125,16 +125,10 @@ def home(request):
     context = {
         'site_name': 'BlogHub',
         'tagline': 'Your Platform for Sharing Ideas',
-        'total_posts': 247,
-        'total_authors': 45,
+        'total_posts': len(posts_list),
+        'total_authors': len(set(post['author'] for post in posts_list)),
         'current_year': datetime.now().year,
-        'featured_topics': [
-            'Technology',
-            'Design',
-            'Travel',
-            'Education',
-            'Lifestyle'
-        ],
+        'featured_topics': list({post['category'] for post in featured_posts}),
         'features': [
             {'icon': '✍️', 'title': 'Easy Publishing',
              'description': 'Write and publish posts effortlessly'},
@@ -409,6 +403,7 @@ def post_detail(request, post_id):
         'post': post,
     }
 
+
     return render(request, 'blog/post_detail.html', context)
 
 
@@ -666,7 +661,7 @@ def search_posts(request):
     ]
 
     # Get a search query from URL parameters
-    query = request.GET.get('q', '')  # Default to empty string if no query
+    query = request.GET.get('search', '')  # Default to empty string if no query
 
 
 
