@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
 from django.core.paginator import Paginator
-from .models import Post, Category
+from .models import Post, Category, Tag
 from .forms import PostForm
 from django.db.models import Q
 
@@ -21,11 +21,11 @@ def home(request):
     featured_posts = Post.objects.filter(
         status=Post.Status.PUBLISHED,
         is_featured=True
-    )[:3]
+    )[:4]
 
     all_categories = [post.category.name for post in posts]
 
-    unique_categories = list(set(all_categories))
+    unique_categories = list(set(all_categories))[:6]
     context = {
         'site_name': 'BlogHub',
         'tagline': 'Your Platform for Sharing Ideas',
@@ -70,7 +70,7 @@ def posts(request):
     ).select_related('author', 'category').prefetch_related('tags')
 
     # Pagination
-    paginator = Paginator(posts_queryset, 10)  # Show 10 posts per page
+    paginator = Paginator(posts_queryset, 9)  # Show 10 posts per page
     page_number = request.GET.get('page')  # /posts/?page=2
     posts = paginator.get_page(page_number)
 
@@ -82,6 +82,52 @@ def posts(request):
     }
 
     return render(request, 'blog/posts.html', context)
+
+
+# @login_required(login_url='/login/')
+def post_create(request):
+    """Create a new post"""
+    if request.method == 'POST':
+        # Form submitted
+        form = PostForm(request.POST)
+        if form.is_valid():
+            # Save but don't commit to database yet
+            post = form.save(commit=False)
+            # Set the author to current user
+            post.author = request.user
+            # Now save to database
+            post.save()
+            # Save many-to-many relationships (tags)
+            form.save_m2m()
+
+            new_cat = form.cleaned_data.get('new_category')
+            if new_cat:
+                category_obj, _ = Category.objects.get_or_create(name=new_cat)
+                post.category = category_obj
+                post.save()
+
+            new_tags = form.cleaned_data.get('new_tags')
+            if new_tags:
+                tag_names = [t.strip() for t in new_tags.split(',')]
+                for name in tag_names:
+                    tag_obj, _ = Tag.objects.get_or_create(name=name)
+                    post.tags.add(tag_obj)
+
+            # Show success message
+            messages.success(request, 'Post created successfully!')
+            # Redirect to the post detail page
+            return redirect('blog:post_detail', slug=post.slug)
+        else:
+            # Form has errors
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        # GET request - show empty form
+        form = PostForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'blog/post_form.html', context)
 
 
 def post_detail(request, slug):

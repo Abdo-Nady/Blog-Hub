@@ -1,0 +1,105 @@
+{% extends 'blog/base.html' %}
+{% block title %}Create Post{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Create New Post</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+
+            <div class="mb-3">
+                <label for="{{ form.title.id_for_label }}" class="form-label">Title *</label>
+                <input type="text" name="title" class="form-control {% if form.title.errors %}is-invalid{% endif %}"
+                       id="{{ form.title.id_for_label }}" value="{{ form.title.value|default:'' }}"
+                       placeholder="Enter post title">
+                {% if form.title.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.title.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.excerpt.id_for_label }}" class="form-label">Excerpt</label>
+                <textarea name="excerpt" class="form-control {% if form.excerpt.errors %}is-invalid{% endif %}"
+                          id="{{ form.excerpt.id_for_label }}" rows="3"
+                          placeholder="Short summary">{{ form.excerpt.value|default:'' }}</textarea>
+                {% if form.excerpt.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.excerpt.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.content.id_for_label }}" class="form-label">Content *</label>
+                <textarea name="content" class="form-control {% if form.content.errors %}is-invalid{% endif %}"
+                          id="{{ form.content.id_for_label }}" rows="10"
+                          placeholder="Write your post content">{{ form.content.value|default:'' }}</textarea>
+                {% if form.content.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.content.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.category.id_for_label }}" class="form-label">Category *</label>
+                {{ form.category }}
+                <label for="{{ form.new_category.id_for_label }}" class="form-label mt-2">Or add new category</label>
+                {{ form.new_category }}
+            </div>
+
+
+            <div class="mb-3">
+                <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label>
+                {{ form.tags }}
+                <label for="{{ form.new_tags.id_for_label }}" class="form-label mt-2">Or add new tags (comma
+                    separated)</label>
+                {{ form.new_tags }}
+            </div>
+
+
+            <div class="mb-3">
+                <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+                <select name="status" class="form-select {% if form.status.errors %}is-invalid{% endif %}"
+                        id="{{ form.status.id_for_label }}">
+                    {% for value, label in form.status.field.choices %}
+                        <option value="{{ value }}"
+                                {% if form.status.value == value or form.status.value|stringformat:"s" == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.status.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.status.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" name="is_featured" class="form-check-input"
+                       id="{{ form.is_featured.id_for_label }}"
+                       {% if form.is_featured.value %}checked{% endif %}>
+                <label class="form-check-label" for="{{ form.is_featured.id_for_label }}">
+                    Featured Post
+                </label>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" name="allow_comments" class="form-check-input"
+                       id="{{ form.allow_comments.id_for_label }}"
+                       {% if form.allow_comments.value %}checked{% endif %}>
+                <label class="form-check-label" for="{{ form.allow_comments.id_for_label }}">
+                    Allow Comments
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Post</button>
+            <a href="{% url 'blog:posts' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+{% endblock %}
