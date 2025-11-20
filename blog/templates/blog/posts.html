@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-{% block tite %}{{ page_title }} - BlogHub {% endblock %}
+{% block title %}{{ page_title }} - BlogHub {% endblock %}
 
 {% block extra_css %}
     <style>
@@ -87,24 +87,23 @@
     <!-- Posts Grid -->
     <div class="container mb-5">
         <div class="row g-4">
+        <p>Number of posts in this page: {{ posts|length }}</p>
+
             {% for post in posts %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
                             <p class="text-muted">{{ post.category }} | By {{ post.author }}</p>
-                            <p class="text-muted small">{{ post.date }} | {{ post.reading_time }} read</p>
+                            <p class="text-muted small">{{ post.created_at }} | {{ post.read_time }} min read</p>
                             <p class="card-text">{{ post.excerpt }}</p>
 
-                            {% if post.published %}
-                                <span class="badge bg-success">✓ Published</span>
-                            {% else %}
-                                <span class="badge bg-warning">Draft</span>
-                            {% endif %}
+                            <span class="badge bg-success">✓ Published</span>
+
                         </div>
                         <div class="card-footer">
                             <!-- ⭐ New: Link to post detail page -->
-                            <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">
+                            <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary btn-sm w-100">
                                 Read More
                             </a>
                         </div>
@@ -112,6 +111,33 @@
                 </div>
             {% endfor %}
         </div>
+        {% if posts.has_other_pages %}
+            <nav>
+                <ul class="pagination">
+                    {% if posts.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if posts.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
     </div>
 
 {% endblock %}

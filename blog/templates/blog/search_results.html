@@ -4,72 +4,69 @@
 {% block title %}Search Results - BlogHub{% endblock %}
 
 {% block content %}
-<!-- Header -->
-<div class="bg-primary text-white py-4">
-    <div class="container">
-        <h1>🔍 Search Results</h1>
+    <!-- Header -->
+    <div class="bg-primary text-white py-4">
+        <div class="container">
+            <h1>🔍 Search Results</h1>
+            {% if query %}
+                <p class="lead">Results for "{{ query }}"</p>
+            {% else %}
+                <p class="lead">Enter a search term to find posts</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="container mt-4">
+        <form method="GET" action="{% url 'blog:search_posts' %}" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search posts..." value="{{ query }}"
+                       required>
+                <button type="submit" class="btn btn-primary">🔍 Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    <div class="container my-5">
         {% if query %}
-            <p class="lead">Results for "{{ query }}"</p>
+            {% if posts %}
+                <div class="alert alert-success">
+                    Found {{ total_results }} post{{ total_results|pluralize }} matching "{{ query }}"
+                </div>
+
+                <div class="row">
+                    {% for post in posts %}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ post.title }}</h5>
+                                    <p class="text-muted">By {{ post.author }} | {{ post.category }}</p>
+                                    <p class="card-text">{{ post.excerpt }}</p>
+                                    <span class="badge bg-success">✓ Published</span>
+
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary btn-sm w-100">
+                                        Read More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning text-center">
+                    <h4>No posts found for "{{ query }}"</h4>
+                    <p>Try different keywords or browse all posts</p>
+                    <a href="{% url 'blog:posts' %}" class="btn btn-primary">View All Posts</a>
+                </div>
+            {% endif %}
         {% else %}
-            <p class="lead">Enter a search term to find posts</p>
+            <div class="alert alert-info text-center">
+                <h4>Start your search</h4>
+                <p>Enter a title or keyword to find posts you're interested in!</p>
+            </div>
         {% endif %}
     </div>
-</div>
-
-<!-- Search Form -->
-<div class="container mt-4">
-    <form method="GET" action="{% url 'blog:search_posts' %}" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search posts..." value="{{ query }}" required>
-            <button type="submit" class="btn btn-primary">🔍 Search</button>
-        </div>
-    </form>
-</div>
-
-<!-- Search Results -->
-<div class="container my-5">
-    {% if query %}
-        {% if posts %}
-            <div class="alert alert-success">
-                Found {{ total_results }} post{{ total_results|pluralize }} matching "{{ query }}"
-            </div>
-
-            <div class="row">
-                {% for post in posts %}
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ post.title }}</h5>
-                            <p class="text-muted">By {{ post.author }} | {{ post.category }}</p>
-                            <p class="card-text">{{ post.excerpt }}</p>
-
-                            {% if post.published %}
-                                <span class="badge bg-success">✓ Published</span>
-                            {% else %}
-                                <span class="badge bg-secondary">Draft</span>
-                            {% endif %}
-                        </div>
-                        <div class="card-footer">
-                            <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">
-                                Read More
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="alert alert-warning text-center">
-                <h4>No posts found for "{{ query }}"</h4>
-                <p>Try different keywords or browse all posts</p>
-                <a href="{% url 'blog:posts' %}" class="btn btn-primary">View All Posts</a>
-            </div>
-        {% endif %}
-    {% else %}
-        <div class="alert alert-info text-center">
-            <h4>Start your search</h4>
-            <p>Enter a title or keyword to find posts you're interested in!</p>
-        </div>
-    {% endif %}
-</div>
 {% endblock %}

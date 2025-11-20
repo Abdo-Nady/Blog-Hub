@@ -76,14 +76,11 @@
                                 <p class="text-muted">By {{ post.author }} | {{ post.category }}</p>
                                 <p class="card-text">{{ post.excerpt }}</p>
 
-                                {% if post.published %}
-                                    <span class="badge bg-success">✓ Published</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">Draft</span>
-                                {% endif %}
+                                <span class="badge bg-success">✓ Published</span>
+
                             </div>
                             <div class="card-footer">
-                                <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary btn-sm w-100">
                                     Read More
                                 </a>
                             </div>

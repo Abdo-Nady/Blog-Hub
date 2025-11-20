@@ -29,7 +29,7 @@ class PostAdmin(admin.ModelAdmin):
         "status",
         "is_featured",
         "read_time",
-        "views",
+        "views_count",
         "created_at",
         "colored_status",
         "tag_list",
@@ -74,7 +74,7 @@ class PostAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ('tags',)
 
-    readonly_fields = ("views", "created_at")
+    readonly_fields = ("views_count", "created_at")
 
 
     actions = ['make_published', 'make_draft', 'reset_views']

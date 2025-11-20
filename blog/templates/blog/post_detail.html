@@ -75,7 +75,7 @@
                 <!-- Category Badge and Meta Info -->
                 <p class="text-muted">
                     <span class="badge bg-secondary">{{ post.category }}</span>
-                    | By {{ post.author }} | {{ post.date }} | {{ post.reading_time }} read | {{ post.views }} views
+                    | By {{ post.author }} | {{ post.date }} | {{ post.read_time }} read | {{ post.views_count }} views
                 </p>
 
                 <!-- Published Status -->
@@ -100,26 +100,16 @@
                     <div class="card-body">
                         <h5 class="card-title">Tags</h5>
                         <div>
-                            {% for tag in post.tags %}
-                                <span class="badge bg-info me-2">{{ tag }}</span>
+                            {% for tag in post.tags.all %}
+                                <span class="badge bg-info me-2">{{ tag.name }}</span>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
 
                 <!-- Engagement Buttons -->
-                {% if post.published %}
-                    <button class="btn btn-primary btn-lg w-100 mb-2">
-                        � Like this Post
-                    </button>
-                    <button class="btn btn-outline-secondary w-100">
-                        🔖 Bookmark for Later
-                    </button>
-                {% else %}
-                    <button class="btn btn-secondary btn-lg w-100" disabled>
-                        Currently Unavailable
-                    </button>
-                {% endif %}
+                <span class="badge bg-success">✓ Published</span>
+
             </div>
         </div>
 

@@ -113,7 +113,6 @@ class Post(models.Model):
         help_text='Allow users to comment'
     )
 
-    views = models.IntegerField(default=0)
 
     # Relationships
     author = models.ForeignKey(

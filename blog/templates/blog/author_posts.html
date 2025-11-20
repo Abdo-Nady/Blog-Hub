@@ -51,21 +51,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="card border-0 shadow-sm h-100 author-card">
                     <div class="card-body d-flex flex-column">
-                        <!-- Emoji Cover -->
-                        <div class="text-center mb-3">
-                            <h1 style="font-size: 4rem; margin: 0;">
-                                {% if post.category == 'Technology' %}💻
-                                {% elif post.category == 'Design' %}🎨
-                                {% elif post.category == 'Self-Improvement' %}🌟
-                                {% elif post.category == 'Business' %}💼
-                                {% elif post.category == 'Lifestyle' %}🌿
-                                {% elif post.category == 'Health' %}❤️
-                                {% elif post.category == 'Career' %}🚀
-                                {% else %}📝
-                                {% endif %}
-                            </h1>
-                        </div>
-                        
+
                         <!-- Category Badge -->
                         <div class="mb-2">
                             <span class="category-badge">{{ post.category }}</span>
@@ -76,8 +62,8 @@
 
                         <!-- Date -->
                         <p class="card-text text-muted small mb-2">
-                            <strong>📅 Date:</strong> {{ post.date|date:"F d, Y" }}<br>
-                            <strong>⏱️ Reading Time:</strong> {{ post.reading_time }}
+                            <strong>📅 Date:</strong> {{ post.created_at|date:"F d, Y" }}<br>
+                            <strong>⏱️ Reading Time:</strong> {{ post.read_time }}
                         </p>
 
                         <!-- Excerpt -->
@@ -85,14 +71,10 @@
 
                         <!-- Status Badge and Button -->
                         <div class="mt-auto">
-                            {% if post.published %}
-                                <span class="badge bg-success mb-2">Published</span>
-                            {% else %}
-                                <span class="badge bg-warning text-dark mb-2">Draft</span>
-                            {% endif %}
+                             <span class="badge bg-success mb-2">Published</span>
 
                             <div class="d-grid">
-                                <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary">Read More</a>
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary">Read More</a>
                             </div>
                         </div>
                     </div>
