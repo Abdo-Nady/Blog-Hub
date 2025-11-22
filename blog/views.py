@@ -94,6 +94,7 @@ def post_create(request):
             # Save but don't commit to database yet
             post = form.save(commit=False)
             # Set the author to current user
+
             post.author = request.user
             # Now save to database
             post.save()
@@ -128,6 +129,57 @@ def post_create(request):
         'form': form,
     }
     return render(request, 'blog/post_form.html', context)
+
+
+# @login_required(login_url='/login/')
+def post_update(request, slug):
+    """Update an existing post"""
+    # Get the post
+    post = get_object_or_404(Post, slug=slug)
+
+    # Check if user is the author
+    if post.author != request.user:
+        messages.error(request, 'You can only edit your own posts!')
+        return redirect('blog:post_detail', slug=post.slug)
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post updated successfully!')
+            return redirect('blog:post_detail', slug=post.slug)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PostForm(instance=post)
+
+    context = {
+        'form': form,
+        'post': post,
+    }
+    return render(request, 'blog/post_form.html', context)
+
+
+
+# @login_required(login_url='/login/')
+# def post_delete(request, slug):
+#     """Delete a post"""
+#     post = get_object_or_404(Post, slug=slug)
+#
+#     # Check if user is the author
+#     if post.author != request.user:
+#         messages.error(request, 'You can only delete your own posts!')
+#         return redirect('blog:post_detail', slug=post.slug)
+#
+#     if request.method == 'POST':
+#         post.delete()
+#         messages.success(request, 'Post deleted successfully!')
+#         return redirect('blog:post-list')
+#
+#     context = {
+#         'post': post,
+#     }
+#     return render(request, 'blog/post_confirm_delete.html', context)
 
 
 def post_detail(request, slug):

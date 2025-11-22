@@ -14,7 +14,8 @@ class Category(models.Model):
     slug = models.SlugField(
         max_length=100,
         unique=True,
-        help_text='URL-friendly version of the name'
+        help_text='URL-friendly version of the name',
+        allow_unicode=True
     )
     description = models.TextField(
         blank=True,
@@ -34,7 +35,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
 
 
@@ -48,7 +49,9 @@ class Tag(models.Model):
     slug = models.SlugField(
         max_length=50,
         unique=True,
-        help_text='URL-friendly version of the name'
+        help_text='URL-friendly version of the name',
+        allow_unicode=True
+
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -60,7 +63,7 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
 
 
@@ -80,7 +83,8 @@ class Post(models.Model):
     slug = models.SlugField(
         max_length=200,
         unique=True,
-        help_text='URL-friendly version of the title'
+        help_text='URL-friendly version of the title',
+        allow_unicode=True
     )
     excerpt = models.TextField(
         blank=True,
@@ -159,7 +163,7 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         # Auto-generate slug if not provided
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.title, allow_unicode=True)
 
         # Set published_at when status changes to published
         if self.status == self.Status.PUBLISHED and not self.published_at:
