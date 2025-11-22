@@ -6,7 +6,8 @@ from django.core.paginator import Paginator
 from .models import Post, Category, Tag
 from .forms import PostForm
 from django.db.models import Q
-
+import markdown
+from django.utils.safestring import mark_safe
 from datetime import datetime, date
 
 
@@ -94,7 +95,6 @@ def post_create(request):
             # Save but don't commit to database yet
             post = form.save(commit=False)
             # Set the author to current user
-
             post.author = request.user
             # Now save to database
             post.save()
@@ -162,24 +162,24 @@ def post_update(request, slug):
 
 
 # @login_required(login_url='/login/')
-# def post_delete(request, slug):
-#     """Delete a post"""
-#     post = get_object_or_404(Post, slug=slug)
-#
-#     # Check if user is the author
-#     if post.author != request.user:
-#         messages.error(request, 'You can only delete your own posts!')
-#         return redirect('blog:post_detail', slug=post.slug)
-#
-#     if request.method == 'POST':
-#         post.delete()
-#         messages.success(request, 'Post deleted successfully!')
-#         return redirect('blog:post-list')
-#
-#     context = {
-#         'post': post,
-#     }
-#     return render(request, 'blog/post_confirm_delete.html', context)
+def post_delete(request, slug):
+    """Delete a post"""
+    post = get_object_or_404(Post, slug=slug)
+
+    # Check if user is the author
+    if post.author != request.user:
+        messages.error(request, 'You can only delete your own posts!')
+        return redirect('blog:post_detail', slug=post.slug)
+
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Post deleted successfully!')
+        return redirect('blog:posts')
+
+    context = {
+        'post': post,
+    }
+    return render(request, 'blog/post_detail.html', context)
 
 
 def post_detail(request, slug):

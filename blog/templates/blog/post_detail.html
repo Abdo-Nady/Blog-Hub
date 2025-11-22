@@ -76,23 +76,18 @@
                 <!-- Category Badge and Meta Info -->
                 <p class="text-muted">
                     <span class="badge bg-secondary">{{ post.category }}</span>
-                    | By {{ post.author }} | {{ post.date }} | {{ post.read_time }} read | {{ post.views_count }} views
+                    | By {{ post.author }} | {{ post.date }} | {{ post.read_time }} min read | {{ post.views_count }}
+                    views
                 </p>
 
-                <!-- Published Status -->
-                <div class="mb-3">
-                    {% if post.published %}
-                        <span class="badge bg-success">Published</span>
-                    {% else %}
-                        <span class="badge bg-warning">Draft</span>
-                    {% endif %}
-                </div>
 
                 <!-- Content -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Article Content</h5>
-                        <p class="card-text">{{ post.content }}</p>
+                        <div class="card-text">
+                            {{ post.content|linebreaksbr }}
+                        </div>
                     </div>
                 </div>
 
@@ -111,15 +106,25 @@
                 <!-- Engagement Buttons -->
                 <span class="badge bg-success">✓ Published</span>
 
-                <div class="col-md-10">
-                    <a href="{% url 'blog:post-update' post.slug %}">
+                {% if post.author == request.user %}
+                    <div class="d-flex justify-content-start my-3">
+                        <a href="{% url 'blog:post-update' post.slug %}">
+                            <button class="btn btn-sm btn-primary">
+                                <i class="bi bi-pencil-square me-1"></i> Edit
+                            </button>
+                        </a>
+                    </div>
 
-                        <button class="btn btn-primary">edit</button>
+                    <div class="d-flex justify-content-start my-3">
+                        <form method="POST" action="{% url 'blog:post_delete' post.slug %}">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash me-1"></i> Delete
+                            </button>
+                        </form>
+                    </div>
 
-                    </a>
-
-                </div>
-
+                {% endif %}
 
             </div>
         </div>
