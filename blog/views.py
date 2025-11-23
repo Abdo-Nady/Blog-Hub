@@ -1,8 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.views.generic import ListView
+
 from .models import Post, Category, Tag
 from .forms import PostForm
 from django.db.models import Q
@@ -160,7 +163,6 @@ def post_update(request, slug):
     return render(request, 'blog/post_form.html', context)
 
 
-
 # @login_required(login_url='/login/')
 def post_delete(request, slug):
     """Delete a post"""
@@ -186,7 +188,6 @@ def post_detail(request, slug):
     post = get_object_or_404(
         Post.objects.select_related('author', 'category').prefetch_related('tags'),
         slug=slug,
-        status=Post.Status.PUBLISHED
     )
 
     post.views_count += 1
@@ -337,3 +338,26 @@ def author_posts(request, author_name):
     }
 
     return render(request, 'blog/author_posts.html', context)
+
+
+class MyPostsView(LoginRequiredMixin, ListView):
+    """Display only the current user's posts"""
+    model = Post
+    template_name = 'blog/my_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
+
+class DraftPostsView(LoginRequiredMixin, ListView):
+    """Display only draft posts of current user"""
+    model = Post
+    template_name = 'blog/draft_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(
+            author=self.request.user,
+            status=Post.Status.DRAFT
+        )

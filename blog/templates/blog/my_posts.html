@@ -1,0 +1,59 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}My Posts - BlogHub{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">My Posts</h2>
+
+    {% if posts %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Views</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                    <tr>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.category }}</td>
+                        <td>
+                            {% if post.status == 'published' %}
+                                <span class="badge bg-success">Published</span>
+                            {% else %}
+                                <span class="badge bg-warning">Draft</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ post.views_count }}</td>
+                        <td>{{ post.date }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'blog:post-update' post.slug %}" class="btn btn-sm btn-primary d-flex align-items-center">
+                                    <i class="bi bi-pencil-square me-1"></i> Edit
+                                </a>
+                                <form method="POST" action="{% url 'blog:post_delete' post.slug %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger d-flex align-items-center">
+                                        <i class="bi bi-trash me-1"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">You have not created any posts yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

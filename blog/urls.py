@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+from .views import MyPostsView, DraftPostsView
 
 app_name = "blog"
 
@@ -9,11 +10,12 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("posts/", views.posts, name="posts"),
+    path('my-posts/', MyPostsView.as_view(), name='my_posts'),
 
-    path('post/create/', views.post_create, name='post-create'),
     path('post/<str:slug>/update', views.post_update, name='post-update'),
     path("post/<str:slug>/delete", views.post_delete, name="post_delete"),
-
+    path('drafts/', DraftPostsView.as_view(), name='draft_posts'),
+    path('post/create/', views.post_create, name='post-create'),
     path("post/<str:slug>/", views.post_detail, name="post_detail"),
 
     path("category/<str:category_name>/", views.category_posts, name="category_posts"),

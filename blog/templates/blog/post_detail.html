@@ -91,6 +91,25 @@
                     </div>
                 </div>
 
+                {% if post.author == request.user %}
+                    <div class="d-flex gap-2 my-3">
+                        <!-- Edit Button -->
+                        <a href="{% url 'blog:post-update' post.slug %}"
+                           class="btn btn-primary d-flex align-items-center">
+                            <i class="bi bi-pencil-square me-1"></i> Edit
+                        </a>
+
+                        <!-- Delete Button as POST -->
+                        <form method="POST" action="{% url 'blog:post_delete' post.slug %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger d-flex align-items-center">
+                                <i class="bi bi-trash me-1"></i> Delete Post
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+
+
                 <!-- Tags -->
                 <div class="card mb-4">
                     <div class="card-body">
@@ -104,27 +123,12 @@
                 </div>
 
                 <!-- Engagement Buttons -->
-                <span class="badge bg-success">✓ Published</span>
-
-                {% if post.author == request.user %}
-                    <div class="d-flex justify-content-start my-3">
-                        <a href="{% url 'blog:post-update' post.slug %}">
-                            <button class="btn btn-sm btn-primary">
-                                <i class="bi bi-pencil-square me-1"></i> Edit
-                            </button>
-                        </a>
-                    </div>
-
-                    <div class="d-flex justify-content-start my-3">
-                        <form method="POST" action="{% url 'blog:post_delete' post.slug %}">
-                            {% csrf_token %}
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash me-1"></i> Delete
-                            </button>
-                        </form>
-                    </div>
-
+                {% if post.status == 'Published' %}
+                    <span class="badge bg-success">✓ Published</span>
+                {% else %}
+                    <span class="badge bg-secondary">Draft</span>
                 {% endif %}
+
 
             </div>
         </div>
@@ -134,6 +138,43 @@
             <a href="{% url 'blog:posts' %}" class="btn btn-outline-primary">
                 ← Back to All Posts
             </a></div>
+
+        <!-- Related Posts -->
+        {% if related_posts %}
+            <div class="mt-5">
+                <h3>Related Posts</h3>
+                <div class="row">
+                    {% for related in related_posts %}
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ related.title }}</h5>
+                                    <p class="card-text">{{ related.excerpt|truncatewords:15 }}</p>
+                                    <a href="{% url 'blog:post_detail' related.slug %}"
+                                       class="btn btn-sm btn-outline-primary">Read</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        {% if post.allow_comments %}
+            <div class="mt-5">
+                <h3>Comments ({{ comments.count }})</h3>
+                {% for comment in comments %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <strong>{{ comment.author.username }}</strong>
+                            <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No comments yet. Be the first to comment!</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
