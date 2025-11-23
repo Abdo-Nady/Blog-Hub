@@ -52,6 +52,19 @@
         </div>
     </div>
 
+    <!-- Messages (Success/Error) -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
     {% comment %} Featured Topics {% endcomment %}
     {% if is_featured_active %}
         <div class="container mt-4">
@@ -117,7 +130,8 @@
                                     <p class="text-muted small mb-2">
                                         <strong>⏱️</strong> {{ post.read_time }} mins
                                     </p>
-                                    <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary btn-sm w-100">Read
+                                    <a href="{% url 'blog:post_detail' post.slug %}"
+                                       class="btn btn-primary btn-sm w-100">Read
                                         More</a></div>
                             </div>
                         </div>

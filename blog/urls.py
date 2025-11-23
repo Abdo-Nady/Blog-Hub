@@ -1,12 +1,19 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import MyPostsView, DraftPostsView
+
+from .views import MyPostsView, DraftPostsView, LoginView, RegisterView, UserLogoutView
 
 app_name = "blog"
 
 urlpatterns = [
     path("", views.home, name="home"),
+
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+
+    path('logout/', UserLogoutView.as_view(), name='logout'),
+
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("posts/", views.posts, name="posts"),

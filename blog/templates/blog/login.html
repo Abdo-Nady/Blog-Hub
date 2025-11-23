@@ -1,0 +1,48 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Login - BlogHub{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h3 class="mb-4 text-center">Login</h3>
+
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    {{ error }}<br>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                {{ error }}<br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+
+
+                    <div class="mb-3">
+                        <label for="id_username">Email</label>
+                        <input type="text" name="username" class="form-control" id="id_username" placeholder="Enter your username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_password">Password</label>
+                        <input type="password" name="password" class="form-control" id="id_password" placeholder="Enter your password" required>
+                    </div>
+
+                    <p class="text-center">Don't have an account? <a href="{% url 'blog:register' %}">Register here</a></p>
+
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,17 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView as DjangoLoginView, LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.views.generic import ListView
-
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
 from .models import Post, Category, Tag
-from .forms import PostForm
+from .forms import PostForm, RegisterForm
 from django.db.models import Q
-import markdown
-from django.utils.safestring import mark_safe
-from datetime import datetime, date
+from datetime import datetime
 
 
 # Create your views here.
@@ -71,7 +70,7 @@ def about(request):
 def posts(request):
     posts_queryset = Post.objects.filter(
         status=Post.Status.PUBLISHED
-    ).select_related('author', 'category').prefetch_related('tags')
+    ).select_related('author', 'category').prefetch_related('tags').order_by('-created_at')
 
     # Pagination
     paginator = Paginator(posts_queryset, 9)  # Show 10 posts per page
@@ -88,7 +87,7 @@ def posts(request):
     return render(request, 'blog/posts.html', context)
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/login/')
 def post_create(request):
     """Create a new post"""
     if request.method == 'POST':
@@ -134,7 +133,7 @@ def post_create(request):
     return render(request, 'blog/post_form.html', context)
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/login/')
 def post_update(request, slug):
     """Update an existing post"""
     # Get the post
@@ -163,7 +162,7 @@ def post_update(request, slug):
     return render(request, 'blog/post_form.html', context)
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/login/')
 def post_delete(request, slug):
     """Delete a post"""
     post = get_object_or_404(Post, slug=slug)
@@ -216,17 +215,20 @@ def category_posts(request, category_name):
     Shows only posts in that category
     """
     posts_queryset = Post.objects.filter(
-        status=Post.Status.PUBLISHED
-    ).select_related('author', 'category').prefetch_related('tags')
-
-    filtered_posts = posts_queryset.filter(
+        status=Post.Status.PUBLISHED,
         category__name__iexact=category_name
-    )
+
+    ).select_related('author', 'category').prefetch_related('tags').order_by('-created_at')
+
+    paginator = Paginator(posts_queryset, 9)  # Show 10 posts per page
+    page_number = request.GET.get('page')  # /posts/?page=2
+    posts = paginator.get_page(page_number)
 
     context = {
         'category_name': category_name.title(),
-        'posts': filtered_posts,
-        'total_posts': len(filtered_posts),
+        'posts': posts,
+        'post_count': paginator.count,
+
     }
     return render(request, 'blog/category_posts.html', context)
 
@@ -254,15 +256,16 @@ def search_posts(request):
     else:
         search_results = posts
 
+    paginator = Paginator(search_results, 9)  # Show 10 posts per page
+    page_number = request.GET.get('page')  # /posts/?page=2
+    posts = paginator.get_page(page_number)
+
     context = {
         'query': query,
-        'posts': search_results,
-        'total_results': len(search_results),
+        'posts': posts,
+        'total_results': paginator.count,
     }
     return render(request, 'blog/search_results.html', context)
-
-
-from django.contrib import messages
 
 
 def contact(request):
@@ -361,3 +364,41 @@ class DraftPostsView(LoginRequiredMixin, ListView):
             author=self.request.user,
             status=Post.Status.DRAFT
         )
+
+
+class LoginView(DjangoLoginView):
+    template_name = 'blog/login.html'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('blog:home')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid email or password')
+        return super().form_invalid(form)
+
+
+class RegisterView(CreateView):
+    model = User
+    form_class = RegisterForm
+    template_name = 'blog/register.html'
+    success_url = reverse_lazy('blog:login')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Account created successfully! You can now log in')
+        return response
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('blog:home')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy('blog:home')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            messages.info(request, 'You have been logged out successfully')
+        return super().dispatch(request, *args, **kwargs)

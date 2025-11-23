@@ -86,20 +86,35 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li>
+                                <form method="post" action="{% url 'blog:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'blog:login' %}">Login</a>
                     </li>
                 {% endif %}
             </ul>
             <!-- Search Form -->
-            <form method="GET" action="{% url 'blog:search_posts' %}" class="d-flex ms-3">
-                <input type="text" name="search" class="form-control me-2" placeholder="Search posts..." required>
-                <button type="submit" class="btn btn-outline-light">🔍</button>
+            <form method="get" action="{% url 'blog:search_posts' %}" class="d-flex ms-3" role="search">
+                <input
+                        type="text"
+                        name="search"
+                        class="form-control me-2"
+                        placeholder="Search posts..."
+                        aria-label="Search"
+                        required
+                >
+                <button type="submit" class="btn btn-outline-light">
+                    🔍
+                </button>
             </form>
+
 
         </div>
     </div>
