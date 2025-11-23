@@ -190,7 +190,7 @@ class Comment(models.Model):
         help_text='Comment content'
     )
     is_approved = models.BooleanField(
-        default=False,
+        default=True,
         help_text='Approve comment for display'
     )
     created_at = models.DateTimeField(auto_now_add=True)

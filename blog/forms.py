@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
-from .models import Post, Category, Tag, User
+from .models import Post, Category, Tag, User , Comment
 
 
 class PostForm(forms.ModelForm):
@@ -97,3 +97,18 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Write your comment here...',
+            'rows': 4
+        }),
+        label='',
+        max_length=1000
+    )
+
+    class Meta:
+        model = Comment
+        fields = ['content']

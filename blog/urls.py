@@ -28,4 +28,6 @@ urlpatterns = [
     path("category/<str:category_name>/", views.category_posts, name="category_posts"),
     path("search/", views.search_posts, name="search_posts"),
     path("author/<str:author_name>/", views.author_posts, name="author_posts"),
+    path("post/<slug:slug>/comment/", views.add_comment, name='add_comment'),
+    path("comment/<int:comment_id>/delete/", views.delete_comment, name='delete_comment'),
 ]

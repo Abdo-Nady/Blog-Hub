@@ -7,8 +7,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
-from .models import Post, Category, Tag
-from .forms import PostForm, RegisterForm
+from .models import Post, Category, Tag , Comment
+
+from .forms import PostForm, RegisterForm, CommentForm
+
 from django.db.models import Q
 from datetime import datetime
 
@@ -199,12 +201,47 @@ def post_detail(request, slug):
 
     comments = post.comments.filter(is_approved=True)
 
+    comment_form = CommentForm()
+
     context = {
         'post': post,
         'related_posts': related_posts,
         'comments': comments,
+        'comment_form': comment_form,
     }
     return render(request, 'blog/post_detail.html', context)
+
+
+@login_required(login_url='/login/')
+def add_comment(request, slug):
+    """Add a comment to a post"""
+    post = get_object_or_404(Post, slug=slug)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            messages.success(request, 'Comment added successfully!')
+        else:
+            messages.error(request, 'Error adding comment. Please try again.')
+
+    return redirect('blog:post_detail', slug=slug)
+
+
+@login_required(login_url='/login/')
+def delete_comment(request, comment_id):
+    """Delete a comment"""
+    comment = get_object_or_404(Comment, id=comment_id, author=request.user)
+    slug = comment.post.slug
+
+    if request.method == 'POST':
+        comment.delete()
+        messages.success(request, 'Comment deleted successfully!')
+
+    return redirect('blog:post_detail', slug=slug)
 
 
 def category_posts(request, category_name):
